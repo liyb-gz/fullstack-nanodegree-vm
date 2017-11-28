@@ -9,10 +9,9 @@ class User(Base):
 	__tablename__ = 'user'
 
 	id = Column(Integer, primary_key = True)
-	username = Column(String(60), index = True)
-	email = Column(String(120))
+	username = Column(String(60))
+	email = Column(String(120), unique = True)
 	picture = Column(String(250))
-
 
 class Category(Base):
 	__tablename__ = 'category'

@@ -21,8 +21,8 @@ class Category(Base):
 	description = Column(String(5000))
 
 	# TODO: add nullable = False to creator id after adding authentication
-	creator_id = Column(Integer, ForeignKey('user.id'))
-	creator = relationship(User)
+	# creator_id = Column(Integer, ForeignKey('user.id'))
+	# creator = relationship(User)
 
 	@property
 	def serialize(self):
@@ -30,7 +30,7 @@ class Category(Base):
 			'id': self.id,
 			'name': self.name,
 			'description': self.description,
-			'creator_id': self.creator_id
+			# 'creator_id': self.creator_id
 		}
 
 class Item(Base):
@@ -44,8 +44,8 @@ class Item(Base):
 	category = relationship(Category)
 
 	# TODO: add nullable = False to creator id after adding authentication
-	creator_id = Column(Integer, ForeignKey('user.id'))
-	creator = relationship(User)
+	# creator_id = Column(Integer, ForeignKey('user.id'))
+	# creator = relationship(User)
 
 	@property
 	def serialize(self):
@@ -54,7 +54,7 @@ class Item(Base):
 			'name': self.name,
 			'description': self.description,
 			'category_id': self.category_id,
-			'creator_id': self.creator_id
+			# 'creator_id': self.creator_id
 		}
 
 engine = create_engine('sqlite:///catalog.db')

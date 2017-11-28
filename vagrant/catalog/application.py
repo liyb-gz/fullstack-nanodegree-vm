@@ -25,6 +25,11 @@ def showAllCategories():
 def createCategory():
 	return 'Create new category'
 
+@app.route('/json')
+def jsonAllCategories():
+	""" JSON Entry. Return all categories with its items. """
+	return jsonify(message = 'JSON Entry.')
+
 
 if __name__ == '__main__':
     app.debug = True

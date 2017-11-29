@@ -63,10 +63,14 @@ def processOneCategories(id):
 	"""
 	if request.method == 'GET':
 		return displayCategory(id)
+
 	elif request.method == 'PUT':
-		return updateCategory(id)
+		data = request.form
+		return updateCategory(id, data)
+
 	elif request.method == 'DELETE':
-		return deleteCategory(id)
+		data = request.form
+		return deleteCategory(id, data)
 	else:
 		# Method not allowed
 		abort(405)
@@ -80,10 +84,10 @@ def displayCategory(id):
 	else:
 		abort(404)
 
-def updateCategory(id):
+def updateCategory(id, data):
 	return "update a category: {}".format(id)
 
-def deleteCategory(id):
+def deleteCategory(id, data):
 	return "delete a category: {}".format(id)
 
 @app.route('/json')

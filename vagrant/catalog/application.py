@@ -72,7 +72,13 @@ def processOneCategories(id):
 		abort(405)
 
 def displayCategory(id):
-	return "display a category: {}".format(id)
+	category = session.query(Category).filter_by(id = id).first()
+	if category is not None:
+		output = 'Category: {} \n'.format(category.name) + \
+			     'Description: {} \n\n'.format(category.description)
+		return output
+	else:
+		abort(404)
 
 def updateCategory(id):
 	return "update a category: {}".format(id)

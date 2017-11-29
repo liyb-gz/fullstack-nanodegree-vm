@@ -99,6 +99,8 @@ def updateCategory(category, data):
 	return "update a category: {}".format(category.serialize)
 
 def deleteCategory(category, data):
+	session.delete(category)
+	session.commit()
 	return "delete a category: {}".format(category.serialize)
 
 @app.route('/json')

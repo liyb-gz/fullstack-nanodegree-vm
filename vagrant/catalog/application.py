@@ -105,9 +105,14 @@ def deleteCategory(category, data):
 
 @app.route('/json')
 def jsonAllCategories():
-	""" JSON Entry. Return all categories with its items. """
+	""" JSON Entry. Return all categories """
 	categories = session.query(Category).all()
 	return jsonify(categories = [category.serialize for category in categories])
+
+@app.route('/categories/<int:id>/json')
+def jsonCategory():
+	""" JSON Entry. Return a specific categories with its items. """
+	pass
 
 
 if __name__ == '__main__':

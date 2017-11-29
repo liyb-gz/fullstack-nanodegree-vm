@@ -19,12 +19,12 @@ def showAllCategories():
 	GET: Show all categories. 
 	POST: Create a new category."""
 	if request.method == 'GET':
-		return displayCategories()
+		return displayAllCategories()
 	elif request.method == 'POST':
 		data = request.form
 		return createCategory(data)
 
-def displayCategories():
+def displayAllCategories():
 	categories = session.query(Category).all()
 	output = ''
 	for category in categories:
@@ -45,6 +45,8 @@ def createCategory(data):
 		return redirect(url_for('showAllCategories'))
 	else:
 		abort(400, 'The new category must have a name!')
+
+
 
 @app.route('/json')
 def jsonAllCategories():

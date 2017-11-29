@@ -49,7 +49,8 @@ def createCategory(data):
 @app.route('/json')
 def jsonAllCategories():
 	""" JSON Entry. Return all categories with its items. """
-	return jsonify(message = 'JSON Entry.')
+	categories = session.query(Category).all()
+	return jsonify(categories = [category.serialize for category in categories])
 
 
 if __name__ == '__main__':

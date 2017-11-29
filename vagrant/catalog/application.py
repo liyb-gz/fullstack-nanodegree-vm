@@ -14,15 +14,20 @@ app = Flask(__name__)
 
 @app.route('/', methods = ['GET', 'POST'])
 @app.route('/categories/', methods = ['GET', 'POST'])
-def showAllCategories():
+def processAllCategories():
 	""" Homepage. 
 	GET: Show all categories. 
-	POST: Create a new category."""
+	POST: Create a new category.
+	"""
+
 	if request.method == 'GET':
 		return displayAllCategories()
 	elif request.method == 'POST':
 		data = request.form
 		return createCategory(data)
+	else:
+		# Method not allowed
+		abort(405)
 
 def displayAllCategories():
 	categories = session.query(Category).all()

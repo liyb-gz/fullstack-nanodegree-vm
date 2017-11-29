@@ -19,10 +19,19 @@ def showAllCategories():
 	GET: Show all categories. 
 	POST: Create a new category."""
 	if request.method == 'GET':
-		return 'Show all categories. '
+		return displayCategories()
 	elif request.method == 'POST':
 		data = request.form
 		return createCategory(data)
+
+def displayCategories():
+	categories = session.query(Category).all()
+	output = ''
+	for category in categories:
+		output += 'Category: {} \n'.format(category.name) + \
+				  'Description: {} \n\n'.format(category.description)
+
+	return output
 
 def createCategory(data):
 	name = data.get('name')

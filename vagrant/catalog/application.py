@@ -67,15 +67,15 @@ def processOneCategories(id):
 	if category is not None:
 
 		if request.method == 'GET':
-			return displayCategory(id)
+			return displayCategory(category)
 
 		elif request.method == 'PUT':
 			data = request.form
-			return updateCategory(id, data)
+			return updateCategory(category, data)
 
 		elif request.method == 'DELETE':
 			data = request.form
-			return deleteCategory(id, data)
+			return deleteCategory(category, data)
 		else:
 			# Method not allowed
 			abort(405)
@@ -83,17 +83,14 @@ def processOneCategories(id):
 	else:
 		abort(404)
 
-def displayCategory(id):
-	output = 'Category: {} \n'.format(category.name) + \
-		     'Description: {} \n\n'.format(category.description)
-	return output
+def displayCategory(category):
+	return jsonify(category.serialize)
 
-
-def updateCategory(id, data):
+def updateCategory(category, data):
 	return "update a category: {}".format(id)
 
-def deleteCategory(id, data):
-	return "delete a category: {}".format(id)
+def deleteCategory(category, data):
+	return "delete a category: {}".format(category.serialize)
 
 @app.route('/json')
 def jsonAllCategories():

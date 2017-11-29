@@ -53,6 +53,14 @@ def createCategory(data):
 
 @app.route('/categories/<int:id>/', methods = ['GET', 'PUT', 'DELETE'])
 def processOneCategories(id):
+	""" Endpoint to a specific category.
+	GET: display this category together with items belong to it.
+	PUT: update this category.
+	DELETE: delete this category.
+
+	Note: POST is not allowed here. 
+	Creating a new category should be done in the root endpoint.
+	"""
 	if request.method == 'GET':
 		return displayCategory(id)
 	elif request.method == 'PUT':

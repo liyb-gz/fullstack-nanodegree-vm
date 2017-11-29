@@ -51,7 +51,26 @@ def createCategory(data):
 	else:
 		abort(400, 'The new category must have a name!')
 
+@app.route('/categories/<int:id>/', methods = ['GET', 'PUT', 'DELETE'])
+def processOneCategories(id):
+	if request.method == 'GET':
+		return displayCategory(id)
+	elif request.method == 'PUT':
+		return updateCategory(id)
+	elif request.method == 'DELETE':
+		return deleteCategory(id)
+	else:
+		# Method not allowed
+		abort(405)
 
+def displayCategory(id):
+	return "display a category: {}".format(id)
+
+def updateCategory(id):
+	return "update a category: {}".format(id)
+
+def deleteCategory(id):
+	return "delete a category: {}".format(id)
 
 @app.route('/json')
 def jsonAllCategories():

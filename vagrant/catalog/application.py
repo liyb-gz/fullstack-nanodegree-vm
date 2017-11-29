@@ -61,28 +61,33 @@ def processOneCategories(id):
 	Note: POST is not allowed here. 
 	Creating a new category should be done in the root endpoint.
 	"""
-	if request.method == 'GET':
-		return displayCategory(id)
 
-	elif request.method == 'PUT':
-		data = request.form
-		return updateCategory(id, data)
-
-	elif request.method == 'DELETE':
-		data = request.form
-		return deleteCategory(id, data)
-	else:
-		# Method not allowed
-		abort(405)
-
-def displayCategory(id):
+	# Check if the category exists
 	category = session.query(Category).filter_by(id = id).first()
 	if category is not None:
-		output = 'Category: {} \n'.format(category.name) + \
-			     'Description: {} \n\n'.format(category.description)
-		return output
+
+		if request.method == 'GET':
+			return displayCategory(id)
+
+		elif request.method == 'PUT':
+			data = request.form
+			return updateCategory(id, data)
+
+		elif request.method == 'DELETE':
+			data = request.form
+			return deleteCategory(id, data)
+		else:
+			# Method not allowed
+			abort(405)
+
 	else:
 		abort(404)
+
+def displayCategory(id):
+	output = 'Category: {} \n'.format(category.name) + \
+		     'Description: {} \n\n'.format(category.description)
+	return output
+
 
 def updateCategory(id, data):
 	return "update a category: {}".format(id)

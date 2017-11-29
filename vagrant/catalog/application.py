@@ -87,7 +87,16 @@ def displayCategory(category):
 	return jsonify(category.serialize)
 
 def updateCategory(category, data):
-	return "update a category: {}".format(id)
+	if data.get('name') is not None:
+		category.name = data.get('name') 
+
+	if data.get('description') is not None:
+		category.description = data.get('description') 
+		
+	session.add(category)
+	session.commit()
+
+	return "update a category: {}".format(category.serialize)
 
 def deleteCategory(category, data):
 	return "delete a category: {}".format(category.serialize)

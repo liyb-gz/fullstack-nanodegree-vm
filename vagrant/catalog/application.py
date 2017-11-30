@@ -83,6 +83,7 @@ def processOneCategories(id):
 	else:
 		abort(404)
 
+
 def displayCategory(category):
 	return jsonify(category.serialize)
 
@@ -104,15 +105,22 @@ def deleteCategory(category, data):
 	return "delete a category: {}".format(category.serialize)
 
 @app.route('/json')
+@app.route('/categories/json')
 def jsonAllCategories():
 	""" JSON Entry. Return all categories """
 	categories = session.query(Category).all()
 	return jsonify(categories = [category.serialize for category in categories])
 
-@app.route('/categories/<int:id>/json')
-def jsonCategory():
+@app.route('/categories/<int:category_id>/json')
+def jsonCategory(category_id):
 	""" JSON Entry. Return a specific categories with its items. """
-	pass
+	category = session.query(Category).filter_by(id = category_id).first()
+
+	if category is not None:
+		return jsonify(category = category.serialize)
+
+	else:
+		return jsonify(error = "Category not found.")
 
 
 if __name__ == '__main__':

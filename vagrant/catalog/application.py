@@ -12,24 +12,13 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 app = Flask(__name__)
 
-@app.route('/', methods = ['GET', 'POST'])
-@app.route('/categories/', methods = ['GET', 'POST'])
-def processAllCategories():
+@app.route('/')
+@app.route('/categories/')
+def showAllCategories():
 	""" Homepage. 
 	GET: Show all categories. 
-	POST: Create a new category.
 	"""
 
-	if request.method == 'GET':
-		return displayAllCategories()
-	elif request.method == 'POST':
-		data = request.form
-		return createCategory(data)
-	else:
-		# Method not allowed
-		abort(405)
-
-def displayAllCategories():
 	categories = session.query(Category).all()
 	output = ''
 	for category in categories:
@@ -38,7 +27,11 @@ def displayAllCategories():
 
 	return output
 
-def createCategory(data):
+@app.route('/categories/create/', methods = ['GET', 'POST'])
+def createCategory():
+	""" Create a new category."""
+
+	data = request.form
 	name = data.get('name')
 	desc = data.get('description')
 

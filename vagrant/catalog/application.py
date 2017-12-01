@@ -1,6 +1,6 @@
 from models import User, Base, Category, Item
 from flask import Flask, jsonify, request, redirect, \
-				  url_for, abort, g, flash
+				  url_for, abort, g, flash, render_template
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -20,12 +20,9 @@ def showAllCategories():
 	"""
 
 	categories = session.query(Category).all()
-	output = ''
-	for category in categories:
-		output += 'Category: {} \n'.format(category.name) + \
-				  'Description: {} \n\n'.format(category.description)
 
-	return output
+	return render_template('whole_files/index.html', 
+		categories = [category.serialize for category in categories])
 
 @app.route('/categories/create/', methods = ['GET', 'POST'])
 def createCategory():

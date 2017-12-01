@@ -27,24 +27,29 @@ def showAllCategories():
 @app.route('/categories/create/', methods = ['GET', 'POST'])
 def createCategory():
 	""" Create a new category."""
+	if request.method == 'GET':
+		# display create new category page
+		pass
 
-	data = request.form
-	name = data.get('name')
-	desc = data.get('description')
+	elif request.method == 'POST':
+		# receive data from create page form, store it to database
+		data = request.form
+		name = data.get('name')
+		desc = data.get('description')
 
-	if name is not None:
-		newCategory = Category(name = name, description = desc)
-		session.add(newCategory)
-		session.commit()
-		flash('New category "{}" is created.'.format(newCategory.name))
-		return redirect(url_for('showAllCategories'))
-	else:
-		abort(400, 'The new category must have a name!')
+		if name is not None:
+			newCategory = Category(name = name, description = desc)
+			session.add(newCategory)
+			session.commit()
+			flash('New category "{}" is created.'.format(newCategory.name))
+			return redirect(url_for('showAllCategories'))
+		else:
+			abort(400, 'The new category must have a name!')
 
 @app.route('/categories/<int:category_id>/')
 def displayOneCategory(category_id):
 	""" Display a specific category.
-	GET: display this category together with items belong to it.
+		GET: display this category together with items belong to it.
 	"""
 
 	# Check if the category exists

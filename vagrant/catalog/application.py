@@ -21,7 +21,7 @@ def showAllCategories():
 
 	categories = session.query(Category).all()
 
-	return render_template('whole_files/index.html', 
+	return render_template('whole_files/index.html', \
 		categories = [category.serialize for category in categories])
 
 @app.route('/categories/create/', methods = ['GET', 'POST'])
@@ -41,41 +41,23 @@ def createCategory():
 	else:
 		abort(400, 'The new category must have a name!')
 
-@app.route('/categories/<int:id>/', methods = ['GET', 'PUT', 'DELETE'])
-def processOneCategories(id):
-	""" Endpoint to a specific category.
+@app.route('/categories/<int:category_id>/')
+def displayOneCategory(category_id):
+	""" Display a specific category.
 	GET: display this category together with items belong to it.
-	PUT: update this category.
-	DELETE: delete this category.
-
-	Note: POST is not allowed here. 
-	Creating a new category should be done in the root endpoint.
 	"""
 
 	# Check if the category exists
-	category = session.query(Category).filter_by(id = id).first()
-	if category is not None:
-
-		if request.method == 'GET':
-			return displayCategory(category)
-
-		elif request.method == 'PUT':
-			data = request.form
-			return updateCategory(category, data)
-
-		elif request.method == 'DELETE':
-			data = request.form
-			return deleteCategory(category, data)
-		else:
-			# Method not allowed
-			abort(405)
-
+	activeCategory = session.query(Category).filter_by(id = category_id).first()
+	if activeCategory is not None:
+		categories = session.query(Category).all()
+		return render_template('whole_files/category.html', \
+			categories = [category.serialize for category in categories], \
+			activeCategory = activeCategory, \
+			id = category_id)
 	else:
 		abort(404)
 
-
-def displayCategory(category):
-	return jsonify(category.serialize)
 
 def updateCategory(category, data):
 	if data.get('name') is not None:

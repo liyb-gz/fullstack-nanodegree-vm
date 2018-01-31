@@ -1,0 +1,24 @@
+{% extends "layout/normal.html" %}
+
+{% block main_content %}        
+<div class="col-12 col-sm p-3">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Update {{ activeCategory.name }}</h4>
+      
+      <form action="{{ url_for('updateCategory', category_id = id) }}" method="post">
+        <div class="form-group">
+          <label for="name">Category name</label>
+          <input type="text" class="form-control" id="name" name="cname" value="{{activeCategory.name}}">
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea class="form-control" id="desc" rows="3" name="cdesc">{{ activeCategory.description }}</textarea>
+        </div>
+
+         <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>{% endblock %}

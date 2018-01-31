@@ -67,19 +67,44 @@ def displayOneCategory(category_id):
 		abort(404)
 
 
-def updateCategory(category, data):
-	if data.get('name') is not None:
-		category.name = data.get('name') 
+@app.route('/categories/<int:category_id>/update', methods = ['GET', 'POST'])
+def updateCategory(category_id):
+	if request.method == 'GET':
+		activeCategory = session.query(Category).filter_by(id = category_id).first()
+		if activeCategory is not None:
+			categories = session.query(Category).all()
+			return render_template('category_update.html', \
+				categories = [category.serialize for category in categories], \
+				activeCategory = activeCategory, \
+				id = category_id)
+		else:
+			abort(404)
 
-	if data.get('description') is not None:
-		category.description = data.get('description') 
-		
-	session.add(category)
-	session.commit()
+	elif request.method == 'POST':
 
-	return "update a category: {}".format(category.serialize)
+		# receive data from create page form, store it to database
+		data = request.form
+		name = data.get('cname')
+		desc = data.get('cdesc')
 
-def deleteCategory(category, data):
+		print name
+		print desc
+
+		category = session.query(Category).filter_by(id = category_id).one()
+
+		if name is not None:
+			category.name = name
+
+		if desc is not None:
+			category.description = desc
+			
+		session.add(category)
+		session.commit()
+
+		return redirect(url_for('displayOneCategory', category_id = category_id))
+
+@app.route('/categories/<int:category_id>/delete', methods = ['GET', 'POST'])
+def deleteCategory(category_id):
 	session.delete(category)
 	session.commit()
 	return "delete a category: {}".format(category.serialize)
@@ -94,7 +119,7 @@ def jsonAllCategories():
 @app.route('/categories/<int:category_id>/json')
 def jsonCategory(category_id):
 	""" JSON Entry. Return a specific categories with its items. """
-	category = session.query(Category).filter_by(id = category_id).first()
+	category = session.query(Category).filter_by(id = category_id).one()
 
 	if category is not None:
 		return jsonify(category = category.serialize)

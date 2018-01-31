@@ -5,7 +5,7 @@
       {{ category.name }}
     </a>
     {% endfor %}
-    <a href="{{ url_for('createCategory') }}" class="list-group-item list-group-item-action text-center">
+    <a href="{{ url_for('createCategory') }}" class="list-group-item list-group-item-action text-center" data-toggle="tooltip" data-placement="bottom" title="Add a new category">
     	<i class="fa fa-plus" aria-hidden="true"></i>
     </a>
   </div>

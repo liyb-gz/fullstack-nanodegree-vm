@@ -29,13 +29,16 @@ def createCategory():
 	""" Create a new category."""
 	if request.method == 'GET':
 		# display create new category page
-		pass
+		categories = session.query(Category).all()
+
+		return render_template('category_create.html', \
+			categories = [category.serialize for category in categories])
 
 	elif request.method == 'POST':
 		# receive data from create page form, store it to database
 		data = request.form
-		name = data.get('name')
-		desc = data.get('description')
+		name = data.get('cname')
+		desc = data.get('cdesc')
 
 		if name is not None:
 			newCategory = Category(name = name, description = desc)

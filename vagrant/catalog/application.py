@@ -87,9 +87,6 @@ def updateCategory(category_id):
 		name = data.get('cname')
 		desc = data.get('cdesc')
 
-		print name
-		print desc
-
 		category = session.query(Category).filter_by(id = category_id).one()
 
 		if name is not None:
@@ -105,9 +102,24 @@ def updateCategory(category_id):
 
 @app.route('/categories/<int:category_id>/delete', methods = ['GET', 'POST'])
 def deleteCategory(category_id):
-	session.delete(category)
-	session.commit()
-	return "delete a category: {}".format(category.serialize)
+	if request.method == 'GET':
+		activeCategory = session.query(Category).filter_by(id = category_id).first()
+		if activeCategory is not None:
+			categories = session.query(Category).all()
+			return render_template('category_delete.html', \
+				categories = [category.serialize for category in categories], \
+				activeCategory = activeCategory, \
+				id = category_id)
+		else:
+			abort(404)
+
+	elif request.method == 'POST':
+		category = session.query(Category).filter_by(id = category_id).one()
+
+		session.delete(category)
+		session.commit()
+
+		return redirect(url_for('showAllCategories'))
 
 @app.route('/json')
 @app.route('/categories/json')

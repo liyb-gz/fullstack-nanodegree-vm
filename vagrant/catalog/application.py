@@ -59,7 +59,7 @@ def displayOneCategory(category_id):
 	activeCategory = session.query(Category).filter_by(id = category_id).first()
 	if activeCategory is not None:
 		categories = session.query(Category).all()
-		return render_template('whole_files/category.html', \
+		return render_template('category.html', \
 			categories = [category.serialize for category in categories], \
 			activeCategory = activeCategory, \
 			id = category_id)

@@ -1,42 +1,25 @@
 {% extends "layout/normal.html" %}
 
 {% block main_content %}
-
-        <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 col-sm-3 p-3">
-          <div class="list-group">
-            {% for category in categories%}
-            <a href="{{ url_for('displayOneCategory', category_id = category.id) }}" class="list-group-item list-group-item-action">
-              {{ category.name }}
-            </a>
-            {% endfor %}
-          </div>
+<div class="col-12 col-sm p-3">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Create new a category</h4>
+      
+      <form action="{{ url_for('createCategory') }}" method="post">
+        <div class="form-group">
+          <label for="name">Category name</label>
+          <input type="text" class="form-control" id="name" name="cname">
         </div>
-        <div class="col-12 col-sm p-3">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Create new a category</h4>
-              
-              <form action="{{ url_for('createCategory') }}" method="post">
-                <div class="form-group">
-                  <label for="name">Category name</label>
-                  <input type="text" class="form-control" id="name" name="cname">
-                </div>
 
-                <div class="form-group">
-                  <label for="desc">Description</label>
-                  <textarea class="form-control" id="desc" rows="3" name="cdesc"></textarea>
-                </div>
-
-                 <button type="submit" class="btn btn-primary mb-2">Submit</button>
-              </form>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea class="form-control" id="desc" rows="3" name="cdesc"></textarea>
         </div>
-      </div>
+
+         <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      </form>
     </div>
-
-
-
+  </div>
+</div>
 {% endblock %}

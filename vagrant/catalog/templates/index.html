@@ -2,39 +2,27 @@
 
 {% block main_content %}
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 col-sm-3 p-3">
-          <div class="list-group">
-            {% for category in categories%}
-            <a href="{{ url_for('displayOneCategory', category_id = category.id) }}" class="list-group-item list-group-item-action">
-              {{ category.name }}
-            </a>
-            {% endfor %}
-          </div>
-        </div>
-        <div class="col-12 col-sm p-3">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque veniam accusamus facere quibusdam enim minus, maiores animi, totam dolorum repellat consequuntur nemo magnam nostrum ipsum praesentium, dicta eum cupiditate sunt. <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid commodi vero, repellat quo voluptatum, vitae odit harum fugiat nostrum similique dignissimos nisi odio itaque adipisci maxime nam voluptates, ipsa perspiciatis!</span>
-              <span>Quo sit numquam dolores inventore rerum sint est accusamus deleniti, quos eveniet placeat, quaerat minus velit dolore mollitia, commodi a accusantium cupiditate voluptatem neque ab praesentium cum totam at? Nobis.</span>
-              <span>Omnis molestias assumenda neque nam illo ipsa suscipit exercitationem iste, velit, voluptatem, porro. Rerum assumenda sunt officiis saepe, ipsum quia unde nihil a non vero blanditiis cum, commodi quis illo.</span>
-              <span>Officia vero delectus, quaerat ipsa reiciendis in explicabo aliquid hic natus ab? Optio nemo, quia eaque alias. Ipsa voluptatibus, facere aliquam, tenetur quas, doloribus, libero non iste ratione nisi repellendus!</span>
-              <span>A aliquam quis, ipsum repudiandae nobis. Dolor voluptatibus iste tempore qui, veritatis neque. Quae numquam qui sed explicabo vitae commodi eos omnis, architecto natus, voluptas molestiae eligendi aliquid veritatis minus.</span>
-              <span>Est, odio. Corporis, repudiandae, quisquam. Nostrum, iure. Ab aspernatur corporis vitae nulla architecto placeat, sequi fugit totam, labore dolores exercitationem. Recusandae quasi reiciendis, sed maiores quae ipsam numquam amet delectus?</span>
-              <span>Ex quod at non, nemo voluptatem, aspernatur. Quas voluptatem, quisquam sint, suscipit quis incidunt at laborum et quod ipsa consectetur expedita mollitia adipisci temporibus laboriosam, fugit deserunt amet, deleniti molestiae.</span>
-              <span>Autem ducimus eius fuga tempore, saepe quod voluptatem perspiciatis odit, temporibus corporis sapiente ex voluptates incidunt repellat veritatis inventore error! Nostrum accusamus saepe eos quo magni officiis fugiat, facere architecto.</span>
-              <span>Aliquam modi accusantium quia nesciunt praesentium ea eius facilis saepe iure nulla harum, incidunt maiores ipsam omnis dolor consequatur sit est, ex eveniet. Id neque nemo commodi saepe laudantium alias.</span>
-              <span>Obcaecati blanditiis distinctio deleniti dignissimos nihil iusto eius minima minus, asperiores iste, dicta enim porro sunt mollitia dolorem alias! Atque similique modi non quas rem fugit repellendus accusantium maiores iste.</span></p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-      </div>
+
+<div class="col-12 col-sm p-3">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Card title</h4>
+      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque veniam accusamus facere quibusdam enim minus, maiores animi, totam dolorum repellat consequuntur nemo magnam nostrum ipsum praesentium, dicta eum cupiditate sunt. <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid commodi vero, repellat quo voluptatum, vitae odit harum fugiat nostrum similique dignissimos nisi odio itaque adipisci maxime nam voluptates, ipsa perspiciatis!</span>
+      <span>Quo sit numquam dolores inventore rerum sint est accusamus deleniti, quos eveniet placeat, quaerat minus velit dolore mollitia, commodi a accusantium cupiditate voluptatem neque ab praesentium cum totam at? Nobis.</span>
+      <span>Omnis molestias assumenda neque nam illo ipsa suscipit exercitationem iste, velit, voluptatem, porro. Rerum assumenda sunt officiis saepe, ipsum quia unde nihil a non vero blanditiis cum, commodi quis illo.</span>
+      <span>Officia vero delectus, quaerat ipsa reiciendis in explicabo aliquid hic natus ab? Optio nemo, quia eaque alias. Ipsa voluptatibus, facere aliquam, tenetur quas, doloribus, libero non iste ratione nisi repellendus!</span>
+      <span>A aliquam quis, ipsum repudiandae nobis. Dolor voluptatibus iste tempore qui, veritatis neque. Quae numquam qui sed explicabo vitae commodi eos omnis, architecto natus, voluptas molestiae eligendi aliquid veritatis minus.</span>
+      <span>Est, odio. Corporis, repudiandae, quisquam. Nostrum, iure. Ab aspernatur corporis vitae nulla architecto placeat, sequi fugit totam, labore dolores exercitationem. Recusandae quasi reiciendis, sed maiores quae ipsam numquam amet delectus?</span>
+      <span>Ex quod at non, nemo voluptatem, aspernatur. Quas voluptatem, quisquam sint, suscipit quis incidunt at laborum et quod ipsa consectetur expedita mollitia adipisci temporibus laboriosam, fugit deserunt amet, deleniti molestiae.</span>
+      <span>Autem ducimus eius fuga tempore, saepe quod voluptatem perspiciatis odit, temporibus corporis sapiente ex voluptates incidunt repellat veritatis inventore error! Nostrum accusamus saepe eos quo magni officiis fugiat, facere architecto.</span>
+      <span>Aliquam modi accusantium quia nesciunt praesentium ea eius facilis saepe iure nulla harum, incidunt maiores ipsam omnis dolor consequatur sit est, ex eveniet. Id neque nemo commodi saepe laudantium alias.</span>
+      <span>Obcaecati blanditiis distinctio deleniti dignissimos nihil iusto eius minima minus, asperiores iste, dicta enim porro sunt mollitia dolorem alias! Atque similique modi non quas rem fugit repellendus accusantium maiores iste.</span></p>
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
     </div>
+  </div>
+</div>
 
 
 {% endblock %}

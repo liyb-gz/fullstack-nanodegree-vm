@@ -1,3 +1,14 @@
 {% include "layout/header.html" %}
-{% block main_content %}{% endblock %}
+
+<div class="container-fluid">
+      <div class="row">
+
+        {% include "layout/left_menu.html" %}
+		{% block main_content %}{% endblock %}
+        
+
+      </div>
+    </div>
+
+
 {% include "layout/footer.html" %}

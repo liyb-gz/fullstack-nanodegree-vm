@@ -21,7 +21,7 @@ def showAllCategories():
 
 	categories = session.query(Category).all()
 
-	return render_template('whole_files/index.html', \
+	return render_template('index.html', \
 		categories = [category.serialize for category in categories])
 
 @app.route('/categories/create/', methods = ['GET', 'POST'])

@@ -1,11 +1,11 @@
 <div class="col-12 col-sm-3 p-3">
   <div class="list-group">
     {% for category in categories%}
-    <a href="{{ url_for('displayOneCategory', category_id = category.id) }}" class="list-group-item list-group-item-action">
+    <a href="{{ url_for('displayOneCategory', category_id = category.id) }}" class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="right" title="{{ category.description }}">
       {{ category.name }}
     </a>
     {% endfor %}
-    <a href="{{ url_for('createCategory') }}" class="list-group-item list-group-item-action text-center" data-toggle="tooltip" data-placement="bottom" title="Add a new category">
+    <a href="{{ url_for('createCategory') }}" class="list-group-item list-group-item-action text-center" data-toggle="tooltip" data-placement="right" title="Add a new category">
     	<i class="fa fa-plus" aria-hidden="true"></i>
     </a>
   </div>

@@ -123,13 +123,31 @@ def deleteCategory(category_id):
 
 		return redirect(url_for('showAllCategories'))
 
-def createItem(num):
-	newItem = Item( \
-		name = 'Test Item {}'.format(num), \
-		description = 'Testing item {0} Testing item {0} Testing item {0} Testing item {0}'.format(num), \
-		category_id = 6)
-	session.add(newItem)
-	session.commit()
+@app.route('/categories/<int:category_id>/create', methods = ['GET', 'POST'])
+def createItem(category_id):
+	if request.method == 'GET':
+		activeCategory = session.query(Category).filter_by(id = category_id).first()
+		if activeCategory is not None:
+			categories = session.query(Category).all()
+			return render_template('item_create.html', \
+				categories = [category.serialize for category in categories], \
+				activeCategory = activeCategory, \
+				id = category_id)
+		else:
+			abort(404)
+
+	elif request.method == 'POST':
+		# receive data from create page form, store it to database
+		data = request.form
+		name = data.get('iname')
+		desc = data.get('idesc')
+
+		newItem = Item( \
+			name = name, \
+			description = desc, \
+			category_id = category_id)
+		session.add(newItem)
+		session.commit()
 
 def updateItem():
 	pass

@@ -121,6 +121,20 @@ def deleteCategory(category_id):
 
 		return redirect(url_for('showAllCategories'))
 
+def createItem(num):
+	newItem = Item( \
+		name = 'Test Item {}'.format(num), \
+		description = 'Testing item {0} Testing item {0} Testing item {0} Testing item {0}'.format(num), \
+		category_id = 6)
+	session.add(newItem)
+	session.commit()
+
+def updateItem():
+	pass
+
+def deleteItem():
+	pass
+
 @app.route('/json')
 @app.route('/categories/json')
 def jsonAllCategories():
@@ -131,7 +145,7 @@ def jsonAllCategories():
 @app.route('/categories/<int:category_id>/json')
 def jsonCategory(category_id):
 	""" JSON Entry. Return a specific categories with its items. """
-	category = session.query(Category).filter_by(id = category_id).one()
+	category = session.query(Category).filter_by(id = category_id).first()
 
 	if category is not None:
 		return jsonify(category = category.serialize)
@@ -143,4 +157,9 @@ def jsonCategory(category_id):
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'Secret Key'
-    app.run(host='0.0.0.0', port=8000)
+    createItem(1)
+    createItem(2)
+    createItem(3)
+    createItem(4)
+    createItem(5)
+    # app.run(host='0.0.0.0', port=8000)

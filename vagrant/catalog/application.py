@@ -59,9 +59,11 @@ def displayOneCategory(category_id):
 	activeCategory = session.query(Category).filter_by(id = category_id).first()
 	if activeCategory is not None:
 		categories = session.query(Category).all()
+		items = session.query(Item).filter_by(category_id = category_id).all()
 		return render_template('category.html', \
 			categories = [category.serialize for category in categories], \
 			activeCategory = activeCategory, \
+			items = items, \
 			id = category_id)
 	else:
 		abort(404)
@@ -157,9 +159,4 @@ def jsonCategory(category_id):
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'Secret Key'
-    createItem(1)
-    createItem(2)
-    createItem(3)
-    createItem(4)
-    createItem(5)
-    # app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=8000)

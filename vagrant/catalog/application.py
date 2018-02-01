@@ -125,29 +125,38 @@ def deleteCategory(category_id):
 
 @app.route('/categories/<int:category_id>/create', methods = ['GET', 'POST'])
 def createItem(category_id):
-	if request.method == 'GET':
-		activeCategory = session.query(Category).filter_by(id = category_id).first()
-		if activeCategory is not None:
-			categories = session.query(Category).all()
-			return render_template('item_create.html', \
+	activeCategory = session.query(Category).filter_by(id = category_id).first()
+	categories = session.query(Category).all()
+
+	if activeCategory is not None:
+		if request.method == 'GET':
+				return render_template('item_create.html', \
+					categories = [category.serialize for category in categories], \
+					activeCategory = activeCategory, \
+					id = category_id)
+
+		elif request.method == 'POST':
+			# receive data from create page form, store it to database
+			data = request.form
+			name = data.get('iname')
+			desc = data.get('idesc')
+
+			newItem = Item( \
+				name = name, \
+				description = desc, \
+				category_id = category_id)
+			session.add(newItem)
+			session.commit()
+
+			items = session.query(Item).filter_by(category_id = category_id).all()
+
+			return render_template('category.html', \
 				categories = [category.serialize for category in categories], \
 				activeCategory = activeCategory, \
+				items = items, \
 				id = category_id)
-		else:
-			abort(404)
-
-	elif request.method == 'POST':
-		# receive data from create page form, store it to database
-		data = request.form
-		name = data.get('iname')
-		desc = data.get('idesc')
-
-		newItem = Item( \
-			name = name, \
-			description = desc, \
-			category_id = category_id)
-		session.add(newItem)
-		session.commit()
+	else:
+		abort(404)
 
 def updateItem():
 	pass

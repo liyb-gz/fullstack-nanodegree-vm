@@ -1,11 +1,23 @@
 {% extends "layout/normal.html" %}
 
 {% block main_content %}        
-<div class="col-12 col-sm p-3">
+<div class="col-12 col-sm-9 p-3">
   <div class="card category">
   	<h3 class="card-header bg-primary text-white">Create a new item for {{ activeCategory.name }}</h3>
 	<div class="card-body">
-	123
+	  <form action="{{ url_for('createItem', category_id = id) }}" method="post">
+        <div class="form-group">
+          <label for="name">Item name</label>
+          <input type="text" class="form-control" id="name" name="iname">
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea class="form-control" id="desc" rows="3" name="idesc"></textarea>
+        </div>
+
+         <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      </form>
 	</div>
   </div>
 </div>

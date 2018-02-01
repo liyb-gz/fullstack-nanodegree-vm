@@ -117,8 +117,13 @@ def deleteCategory(category_id):
 
 	elif request.method == 'POST':
 		category = session.query(Category).filter_by(id = category_id).one()
+		items = session.query(Item).filter_by(category_id = category_id).all()
 
 		session.delete(category)
+
+		for item in items:
+			session.delete(item) 
+		
 		session.commit()
 
 		return redirect(url_for('showAllCategories'))

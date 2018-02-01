@@ -3,25 +3,21 @@
 {% block main_content %}        
 <div class="col-12 col-sm p-3">
   <div class="card">
-    <div class="card-body">
-    	<div class="float-right" >
-		  <a role="button" class="btn btn-sm btn-primary" href="{{ url_for('updateCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this category">
-		  	<i class="fa fa-pencil" aria-hidden="true"></i>
+	<div class="card-body">
+		<div class="float-right" >
+		  <a role="button" class="btn btn-sm btn-outline-primary" href="{{ url_for('updateCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this category">
+			<i class="fa fa-pencil" aria-hidden="true"></i>
 		  </a>
-		  <a role="button" class="btn btn-sm btn-danger" href="{{ url_for('deleteCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this category">
+		  <a role="button" class="btn btn-sm btn-outline-danger" href="{{ url_for('deleteCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this category">
 			<i class="fa fa-trash" aria-hidden="true"></i>
 		  </a>
 		</div>
-      <h4 class="card-title">{{ activeCategory.name }}</h4>
-      <p class="card-text">{{ activeCategory.description }}</p>
-      {% for item in items %}
-      <p>
-      	{{ item.id }} <br>
-		{{ item.name }} <br>
-		{{ item.desc }}
-      </p>
-      {% endfor %}
-    </div>
+	  <h4 class="card-title">{{ activeCategory.name }}</h4>
+	  <p class="card-text">{{ activeCategory.description }}</p>
+	  <div class="row">
+	  	{% include "layout/item_card.html" %}
+	  </div>
+	</div>
   </div>
 </div>
 {% endblock %}

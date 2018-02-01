@@ -141,20 +141,25 @@ def createItem(category_id):
 			name = data.get('iname')
 			desc = data.get('idesc')
 
-			newItem = Item( \
-				name = name, \
-				description = desc, \
-				category_id = category_id)
-			session.add(newItem)
-			session.commit()
+			if name != '' and name is not None:
 
-			items = session.query(Item).filter_by(category_id = category_id).all()
+				newItem = Item( \
+					name = name, \
+					description = desc, \
+					category_id = category_id)
+				session.add(newItem)
+				session.commit()
 
-			return render_template('category.html', \
-				categories = [category.serialize for category in categories], \
-				activeCategory = activeCategory, \
-				items = items, \
-				id = category_id)
+				items = session.query(Item).filter_by(category_id = category_id).all()
+
+				return render_template('category.html', \
+					categories = [category.serialize for category in categories], \
+					activeCategory = activeCategory, \
+					items = items, \
+					id = category_id)
+
+			else:
+				abort(400, 'The item name must not be empty.')
 	else:
 		abort(404)
 

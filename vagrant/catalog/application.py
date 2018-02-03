@@ -1,12 +1,20 @@
-from models import User, Base, Category, Item
+# Basic FLASK functions
 from flask import Flask, jsonify, request, redirect, \
 				  url_for, abort, g, flash, render_template
+
+# SQLAlchemy functions
+from models import User, Base, Category, Item
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
+# Session
 from flask import session as login_session
 import os, string
+
+# Google Auth
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 engine = create_engine('sqlite:///catalog.db')
 
@@ -232,7 +240,7 @@ def login():
 
 @app.route('/connect', methods = ['POST'])
 def connect():
-	print "test"
+	return "test"
 
 @app.route('/json')
 @app.route('/categories/json')

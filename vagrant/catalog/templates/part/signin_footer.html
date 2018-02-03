@@ -5,10 +5,17 @@
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
     <script>
+    	if (!sendIdToken) {
+    		var sendIdToken = function (data) {
+    			console.error('function "sendIdToken" is not defined!');
+    		}
+    	}
+
         function onSuccess(googleUser) {
           console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
           console.log(googleUser.getBasicProfile().getEmail());
-          window.googleUser = googleUser;
+          // window.googleUser = googleUser;
+          sendIdToken(googleUser.getAuthResponse());
         }
         function onFailure(error) {
           console.log(error);

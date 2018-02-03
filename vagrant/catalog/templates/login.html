@@ -9,12 +9,28 @@
         <div class="card-body">
           <div class="g-signin2" id="google-signin-button" data-onsuccess="onSignIn"></div>
           {{ state }}
+          <h3 id="result"></h3>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
+<script>
+  function sendIdToken (data) {
+    $.ajax({
+      type: 'POST',
+      url: '/connect?state={{ state }}',
+      data: data,
+      success: function (result) {
+        console.log('AJAX success');
+        console.log(result);
+      },
+
+    });
+  }
+</script>
 
 
 

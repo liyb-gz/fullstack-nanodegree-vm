@@ -11,10 +11,12 @@
 				  </a>
 				</div>
 		</h5>
+		{% if item.description %}
 		<div class="card-body">
 			<p class="card-text">
 				{{ item.description }}
 			</p>
 		</div>
+		{% endif %}
 	</div>
 {% endfor %}

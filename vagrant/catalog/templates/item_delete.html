@@ -1,0 +1,21 @@
+{% extends "layout/normal.html" %}
+
+{% block main_content %}        
+<div class="col-12 col-sm-9 p-3">
+  <div class="card category">
+    <div class="card-header bg-danger text-white">
+      Are you sure to delete "{{ item.name }}"?
+    </div>
+  	<div class="card-body">
+        <h5>{{ item.name }}</h5>
+        <p>{{ item.description }}</p>
+  	</div>
+    <div class="card-footer">
+      <form action="{{ url_for('deleteItem', category_id = id, item_id = item.id) }}" method="post">
+          <button type="submit" class="btn btn-danger mb-2">Yes</button>
+          <a class="btn btn-outline-secondary mb-2" href="{{ url_for('displayOneCategory', category_id = id) }}">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

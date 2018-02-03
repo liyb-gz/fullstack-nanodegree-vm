@@ -185,9 +185,9 @@ def updateItem(category_id, item_id):
 			desc = data.get('idesc')
 
 			if name != '' and name is not None:
+				# An item's cannot be blank,
+				# But its decription can be.
 				activeItem.name = name
-
-			if desc != '' and desc is not None:
 				activeItem.description = desc
 			
 			session.add(activeItem)
@@ -200,7 +200,27 @@ def updateItem(category_id, item_id):
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>/delete', methods = ['GET', 'POST'])
 def deleteItem(category_id, item_id):
-	pass
+	activeCategory = session.query(Category).filter_by(id = category_id).first()
+	categories = session.query(Category).all()
+	activeItem = session.query(Item).filter_by(id = item_id).first()
+
+	if (activeCategory is not None) and (activeItem is not None):
+		if request.method == 'GET':
+			return render_template('item_delete.html', \
+				categories = [category.serialize for category in categories], \
+				activeCategory = activeCategory, \
+				item = activeItem, \
+				id = category_id)
+
+		elif request.method == 'POST':
+
+			session.delete(activeItem)
+			session.commit()
+
+			return redirect(url_for('displayOneCategory', category_id = category_id))
+
+	else:
+		abort(404)
 
 @app.route('/json')
 @app.route('/categories/json')

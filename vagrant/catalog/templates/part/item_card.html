@@ -3,10 +3,10 @@
 		<h5 class="card-header">
 			{{ item.name }}
 				<div class="float-right float-menu d-none">
-				  <a role="button" class="btn btn-sm btn-outline-primary" href="{{ url_for('updateCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this item">
+				  <a role="button" class="btn btn-sm btn-outline-primary" href="{{ url_for('updateItem', category_id = id, item_id = item.id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this item">
 					<i class="fa fa-pencil" aria-hidden="true"></i>
 				  </a>
-				  <a role="button" class="btn btn-sm btn-outline-danger" href="{{ url_for('deleteCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this item">
+				  <a role="button" class="btn btn-sm btn-outline-danger" href="{{ url_for('deleteItem', category_id = id, item_id = item.id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this item">
 					<i class="fa fa-trash" aria-hidden="true"></i>
 				  </a>
 				</div>

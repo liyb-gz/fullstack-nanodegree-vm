@@ -168,10 +168,12 @@ def createItem(category_id):
 	else:
 		abort(404)
 
-def updateItem():
+@app.route('/categories/<int:category_id>/items/<int:item_id>/update', methods = ['GET', 'POST'])
+def updateItem(category_id, item_id):
 	pass
 
-def deleteItem():
+@app.route('/categories/<int:category_id>/items/<int:item_id>/delete', methods = ['GET', 'POST'])
+def deleteItem(category_id, item_id):
 	pass
 
 @app.route('/json')

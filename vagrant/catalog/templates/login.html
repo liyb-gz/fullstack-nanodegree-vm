@@ -19,15 +19,19 @@
 
 <script>
   function sendIdToken (data) {
+    console.log('sending:' + data)
     $.ajax({
       type: 'POST',
       url: '/connect?state={{ state }}',
+      contentType: 'application/octet-stream; charset=uft-8',
       data: data,
       success: function (result) {
         console.log('AJAX success');
         console.log(result);
       },
-
+      fail: function (error) {
+        console.error(error);
+      }
     });
   }
 </script>

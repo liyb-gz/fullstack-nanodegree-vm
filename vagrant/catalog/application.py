@@ -16,12 +16,19 @@ import os, string
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
+# ???
+import httplib2
+import json
+# import requests
+
 engine = create_engine('sqlite:///catalog.db')
 
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 app = Flask(__name__)
+
+CLIENT_ID = '673274558455-it6s06htmm3quqakc97q2a3bnggend4m.apps.googleusercontent.com'
 
 @app.route('/')
 @app.route('/categories/')
@@ -240,7 +247,29 @@ def login():
 
 @app.route('/connect', methods = ['POST'])
 def connect():
-	return "test"
+	# Check Session State
+	if request.args.get('state') != login_session['state']:
+		return jsonify(error = "Invalid state parameter"), 401
+	
+	# Process ID Token from Google
+	try:
+		token = request.data
+		idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+
+		print idinfo['iss']
+		print idinfo['email']
+		print idinfo['name']
+		print idinfo['sub']
+
+		if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+			# Wrong Issuer
+			raise ValueError('Wrong issuer.')
+
+		return "success"
+
+	except Exception, error:
+		return jsonify(error = str(error)), 400
+
 
 @app.route('/json')
 @app.route('/categories/json')

@@ -14,8 +14,8 @@
         function onSuccess(googleUser) {
           console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
           console.log(googleUser.getBasicProfile().getEmail());
-          // window.googleUser = googleUser;
-          sendIdToken(googleUser.getAuthResponse());
+          window.googleUser = googleUser;
+          sendIdToken(googleUser.Zi.access_token);
         }
         function onFailure(error) {
           console.log(error);

@@ -230,6 +230,10 @@ def login():
 	login_session['state'] = os.urandom(24).encode('hex')
 	return render_template('login.html', state = login_session['state'])
 
+@app.route('/connect', methods = ['POST'])
+def connect():
+	print "test"
+
 @app.route('/json')
 @app.route('/categories/json')
 def jsonAllCategories():

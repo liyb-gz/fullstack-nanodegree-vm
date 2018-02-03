@@ -5,6 +5,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
+from flask import session as login_session
+import os, string
+
 engine = create_engine('sqlite:///catalog.db')
 
 Base.metadata.bind = engine
@@ -221,6 +224,11 @@ def deleteItem(category_id, item_id):
 
 	else:
 		abort(404)
+
+@app.route('/login')
+def login():
+	login_session['state'] = os.urandom(24).encode('hex')
+	return render_template('login.html', state = login_session['state'])
 
 @app.route('/json')
 @app.route('/categories/json')

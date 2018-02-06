@@ -253,57 +253,62 @@ def deleteItem(category_id, item_id):
 	else:
 		abort(404)
 
-@app.route('/login')
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
-	login_session['state'] = os.urandom(24).encode('hex')
-	return render_template('login.html', state = login_session['state'])
+	if request.method == 'GET':
+		login_session['state'] = os.urandom(24).encode('hex')
+		return render_template('login.html', state = login_session['state'])
 
-@app.route('/connect', methods = ['POST'])
-def connect():
-	# Check Session State
-	if request.args.get('state') != login_session['state']:
-		return jsonify(error = "Invalid state parameter"), 401
-	
-	# Process ID Token from Google
-	try:
-		token = request.data
-		idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+	elif request.method == 'POST':
+		# Check Session State
+		if request.args.get('state') != login_session['state']:
+			return jsonify(error = "Invalid state parameter"), 401
+		
+		# Process ID Token from Google
+		try:
+			token = request.data
+			idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
-		print idinfo['iss']
-		print idinfo['email']
-		print idinfo['name']
-		print idinfo['sub']
-		print idinfo['aud']
+			print idinfo['iss']
+			print idinfo['email']
+			print idinfo['name']
+			print idinfo['sub']
+			print idinfo['aud']
 
-		if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-			# Wrong Issuer
-			raise ValueError('The issuer of your ID information is not accepted.')
+			if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+				# Wrong Issuer
+				raise ValueError('The issuer of your ID information is not accepted.')
 
-		if idinfo['aud'] != CLIENT_ID:
-			# Wrong Audience
-			raise ValueError('The audience of your ID information is not this website.')
+			if idinfo['aud'] != CLIENT_ID:
+				# Wrong Audience
+				raise ValueError('The audience of your ID information is not this website.')
 
-		user = session.query(User).filter_by(gid = idinfo['sub']).first()
+			user = session.query(User).filter_by(gid = idinfo['sub']).first()
 
-		if not user:
-			user = User(\
-				gid = idinfo['sub'],\
-				username = idinfo['name'],\
-				email = idinfo['email'],\
-				picture = idinfo['picture'],\
-				is_authenticated = True,\
-				is_active = True, \
-				is_anonymous = False)
+			if not user:
+				user = User(\
+					gid = idinfo['sub'],\
+					username = idinfo['name'],\
+					email = idinfo['email'],\
+					picture = idinfo['picture'],\
+					is_authenticated = True,\
+					is_active = True, \
+					is_anonymous = False)
 
-			session.add(user)
-			session.commit()
+				session.add(user)
+				session.commit()
 
-		login_user(user)
+			login_user(user)
 
-		return "success"
+			return "success"
 
-	except Exception, error:
-		return jsonify(error = str(error)), 400
+		except Exception, error:
+			return jsonify(error = str(error)), 400
+
+@app.route('/logout')
+def logout():
+	logout_user()
+	return render_template('logout.html')
 
 @app.route('/me')
 @login_required

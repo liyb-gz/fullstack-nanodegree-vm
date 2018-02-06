@@ -1,0 +1,25 @@
+{% extends 'layout/footer.html' %}
+
+{% block signin_footer %}
+    <!-- Google Signin Info -->
+    <script src="https://apis.google.com/js/platform.js?onload=signout" async defer></script>
+
+    <script>
+        function signout() {
+        	gapi.load('auth2', function() {
+        		gapi.auth2.init().then(function() {
+        			var GAuth = gapi.auth2.getAuthInstance();
+        			if (GAuth.isSignedIn.get()) {
+        				GAuth.signOut().then(function () {
+        					$('#result').html('You have successfully logged out. We hope to see you again soon!');
+        				});
+        			} else {
+        				$('#result').html('You are not logged in.');
+
+        			}
+        		});
+        	});
+        }
+	</script>
+
+{% endblock %}

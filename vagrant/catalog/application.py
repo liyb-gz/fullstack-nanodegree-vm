@@ -255,6 +255,7 @@ def deleteItem(category_id, item_id):
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+	# TODO: replace json error msg with html 
 	if request.method == 'GET':
 		login_session['state'] = os.urandom(24).encode('hex')
 		return render_template('login.html', state = login_session['state'])
@@ -318,16 +319,18 @@ def showUser():
 		email = current_user.email,\
 		picture = current_user.picture)
 
-
 @app.route('/json')
 @app.route('/categories/json')
+@login_required
 def jsonAllCategories():
 	""" JSON Entry. Return all categories """
 	categories = session.query(Category).all()
 	return jsonify(categories = [category.serialize for category in categories])
 
 @app.route('/categories/<int:category_id>/json')
+@login_required
 def jsonCategory(category_id):
+	# TODO: Add items that belongs to this category
 	""" JSON Entry. Return a specific categories with its items. """
 	category = session.query(Category).filter_by(id = category_id).first()
 
@@ -336,6 +339,17 @@ def jsonCategory(category_id):
 
 	else:
 		return jsonify(error = "Category not found.")
+
+@app.route('/categories/<int:category_id>/items/<int:item_id>/json')
+@login_required
+def jsonItem(category_id, item_id):
+	item = session.query(Item).filter_by(id = item_id).first()
+
+	if item is not None:
+		return jsonify(item = item.serialize)
+
+	else:
+		return jsonify(error = "Item not found.")
 
 
 if __name__ == '__main__':

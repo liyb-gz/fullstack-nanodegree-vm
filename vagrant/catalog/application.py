@@ -50,6 +50,12 @@ def showAllCategories():
 	""" Homepage. 
 	GET: Show all categories. 
 	"""
+	#TODO: Change index.html
+	#TODO: Cater flash message
+	#TODO: Check app conditions
+	#TODO: Replace "login" icon
+	#TODO: Write error processor
+	#TODO: Provide form validation
 
 	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
 

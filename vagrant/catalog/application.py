@@ -16,9 +16,13 @@ import os, string
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
+# Flask Login
+from flask_login import LoginManager, login_required, \
+						login_user, logout_user 
+
 # ???
-import httplib2
-import json
+# import httplib2
+# import json
 # import requests
 
 engine = create_engine('sqlite:///catalog.db')
@@ -27,6 +31,15 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 app = Flask(__name__)
+
+# Flask-login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(user_id):
+	return session.query(User).filter_by(id = user_id).one()
 
 CLIENT_ID = '673274558455-it6s06htmm3quqakc97q2a3bnggend4m.apps.googleusercontent.com'
 
@@ -292,6 +305,6 @@ def jsonCategory(category_id):
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.secret_key = 'Secret Key'
-    app.run(host='0.0.0.0', port=8000)
+	app.debug = True
+	app.secret_key = 'Secret Key'
+	app.run(host='0.0.0.0', port=8000)

@@ -18,7 +18,7 @@ from google.auth.transport import requests
 
 # Flask Login
 from flask_login import LoginManager, login_required, \
-						login_user, logout_user 
+						login_user, logout_user, current_user 
 
 # ???
 # import httplib2
@@ -38,8 +38,8 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 @login_manager.user_loader
-def load_user(user_id):
-	return session.query(User).filter_by(id = user_id).one()
+def load_user(gid):
+	return session.query(User).filter_by(gid = gid).one()
 
 CLIENT_ID = '673274558455-it6s06htmm3quqakc97q2a3bnggend4m.apps.googleusercontent.com'
 
@@ -283,8 +283,6 @@ def connect():
 			# Wrong Audience
 			raise ValueError('The audience of your ID information is not this website.')
 
-		print 'type of sub: {}'.format(type(idinfo['sub']))
-
 		user = session.query(User).filter_by(gid = idinfo['sub']).first()
 
 		if not user:
@@ -292,7 +290,10 @@ def connect():
 				gid = idinfo['sub'],\
 				username = idinfo['name'],\
 				email = idinfo['email'],\
-				picture = idinfo['picture'])
+				picture = idinfo['picture'],\
+				is_authenticated = True,\
+				is_active = True, \
+				is_anonymous = False)
 
 			session.add(user)
 			session.commit()
@@ -308,7 +309,7 @@ def connect():
 @login_required
 def showUser():
 	return jsonify(id = current_user.id,\
-		name = current_user.name,\
+		username = current_user.username,\
 		email = current_user.email,\
 		picture = current_user.picture)
 

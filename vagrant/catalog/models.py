@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -12,6 +12,15 @@ class User(Base):
 	username = Column(String(60))
 	email = Column(String(120), unique = True)
 	picture = Column(String(250))
+
+	# Required by Flask_login
+	gid = Column(String(20), nullable = False)
+	is_authenticated = Column(Boolean)
+	is_active = Column(Boolean)
+	is_anonymous = Column(Boolean)
+
+	def get_id(self):
+		return self.gid
 
 class Category(Base):
 	__tablename__ = 'category'

@@ -260,6 +260,7 @@ def connect():
 		print idinfo['email']
 		print idinfo['name']
 		print idinfo['sub']
+		print idinfo['aud']
 
 		if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
 			# Wrong Issuer

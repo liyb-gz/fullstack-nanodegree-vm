@@ -14,12 +14,14 @@
         function onSuccess(googleUser) {
           console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
           console.log(googleUser.getBasicProfile().getEmail());
-          window.googleUser = googleUser;
-          sendIdToken(googleUser.Zi.access_token);
+          // window.googleUser = googleUser;
+          sendIdToken(googleUser.getAuthResponse().id_token);
         }
+
         function onFailure(error) {
           console.log(error);
         }
+
         function renderButton() {
           gapi.signin2.render('google-signin-button', {
             'scope': 'profile email',
@@ -30,6 +32,12 @@
             'onsuccess': onSuccess,
             'onfailure': onFailure
           });
+        }
+
+        function signout() {
+        	gapi.auth2.getAuthInstance().signOut().then(function () {
+				console.log("Signed out");
+			});
         }
     </script>
 

@@ -277,12 +277,40 @@ def connect():
 
 		if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
 			# Wrong Issuer
-			raise ValueError('Wrong issuer.')
+			raise ValueError('The issuer of your ID information is not accepted.')
+
+		if idinfo['aud'] != CLIENT_ID:
+			# Wrong Audience
+			raise ValueError('The audience of your ID information is not this website.')
+
+		print 'type of sub: {}'.format(type(idinfo['sub']))
+
+		user = session.query(User).filter_by(gid = idinfo['sub']).first()
+
+		if not user:
+			user = User(\
+				gid = idinfo['sub'],\
+				username = idinfo['name'],\
+				email = idinfo['email'],\
+				picture = idinfo['picture'])
+
+			session.add(user)
+			session.commit()
+
+		login_user(user)
 
 		return "success"
 
 	except Exception, error:
 		return jsonify(error = str(error)), 400
+
+@app.route('/me')
+@login_required
+def showUser():
+	return jsonify(id = current_user.id,\
+		name = current_user.name,\
+		email = current_user.email,\
+		picture = current_user.picture)
 
 
 @app.route('/json')

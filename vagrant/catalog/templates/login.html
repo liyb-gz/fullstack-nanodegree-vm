@@ -27,7 +27,7 @@
       data: data,
       success: function (result) {
         console.log('AJAX success');
-        console.log(result);
+        window.location.replace(GetURLParameter('next'));
       },
       fail: function (error) {
         console.error(error);

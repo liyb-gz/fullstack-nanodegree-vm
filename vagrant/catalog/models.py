@@ -22,6 +22,16 @@ class User(Base):
 	def get_id(self):
 		return self.gid
 
+	@property
+	def serialize(self):
+		return {
+			'id': self.id,
+			'gid': self.gid,
+			'username': self.username,
+			'email': self.email,
+			'picture': self.picture
+		}
+
 class Category(Base):
 	__tablename__ = 'category'
 

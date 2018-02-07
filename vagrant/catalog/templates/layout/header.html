@@ -2,9 +2,9 @@
 
 {% block login_button %}
 <div class="nav-item dropdown">
-  <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <a href="#" class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown">
     {{ current_user.username }}
-  </button>
+  </a>
   <div class="dropdown-menu" aria-labelledby="userDropdown">
     <a class="dropdown-item" href="{{ url_for('showUser') }}">Profile</a>
     <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>

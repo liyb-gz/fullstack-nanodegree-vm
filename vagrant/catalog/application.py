@@ -51,7 +51,6 @@ def showAllCategories():
 	GET: Show all categories. 
 	"""
 	#TODO: Check app conditions
-	#TODO: Replace "login" icon
 	#TODO: Write error processor
 	#TODO: Provide form validation
 	#TODO: Delete error printings

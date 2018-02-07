@@ -293,7 +293,7 @@ def login():
 	# TODO: replace json error msg with html 
 	if request.method == 'GET':
 		login_session['state'] = os.urandom(24).encode('hex')
-		return render_template('login.html', state = login_session['state'])
+		return render_template('login.html', state = login_session['state'], CLIENT_ID = CLIENT_ID)
 
 	elif request.method == 'POST':
 		# Check Session State
@@ -346,7 +346,7 @@ def login():
 @app.route('/logout')
 def logout():
 	logout_user()
-	return render_template('logout.html')
+	return render_template('logout.html', CLIENT_ID = CLIENT_ID)
 
 @app.route('/me')
 @login_required

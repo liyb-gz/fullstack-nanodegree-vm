@@ -1,11 +1,13 @@
 {% include "layout/header.html" %}
 
 <div class="container-fluid">
+	  <div class="row">
+		{% include 'layout/flash_msg.html' %}
+	  </div>
       <div class="row">
 
         {% include "layout/left_menu.html" %}
 		{% block main_content %}{% endblock %}
-        
 
       </div>
     </div>

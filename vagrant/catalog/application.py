@@ -50,7 +50,6 @@ def showAllCategories():
 	""" Homepage. 
 	GET: Show all categories. 
 	"""
-	#TODO: Change index.html
 	#TODO: Cater flash message
 	#TODO: Check app conditions
 	#TODO: Replace "login" icon
@@ -85,9 +84,12 @@ def createCategory():
 				name = name, \
 				description = desc, \
 				creator_id = current_user.id)
+
 			session.add(newCategory)
 			session.commit()
-			flash('New category "{}" is created.'.format(newCategory.name))
+
+			flash('New category "{}" is created.'.format(newCategory.name), 'success')
+
 			return redirect(url_for('showAllCategories'))
 		else:
 			abort(400, 'The new category must have a name!')
@@ -146,6 +148,8 @@ def updateCategory(category_id):
 		session.add(category)
 		session.commit()
 
+		flash('Category "{}" is updated.'.format(category.name), 'success')
+
 		return redirect(url_for('displayOneCategory', category_id = category_id))
 
 @app.route('/categories/<int:category_id>/delete', methods = ['GET', 'POST'])
@@ -167,12 +171,16 @@ def deleteCategory(category_id):
 		category = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).one()
 		items = session.query(Item).filter_by(category_id = category_id, creator_id = current_user.id).all()
 
+		delName = category.name
+
 		session.delete(category)
 
 		for item in items:
 			session.delete(item) 
 		
 		session.commit()
+
+		flash('Category "{}" is deleted.'.format(delName), 'success')
 
 		return redirect(url_for('showAllCategories'))
 
@@ -204,6 +212,8 @@ def createItem(category_id):
 					creator_id = current_user.id)
 				session.add(newItem)
 				session.commit()
+
+				flash('Item "{}" is created.'.format(newItem.name), 'success')
 
 				return redirect(url_for('displayOneCategory', category_id = category_id))
 
@@ -242,6 +252,8 @@ def updateItem(category_id, item_id):
 			session.add(activeItem)
 			session.commit()
 
+			flash('Item "{}" is updated.'.format(activeItem.name), 'success')
+
 			return redirect(url_for('displayOneCategory', category_id = category_id))
 
 	else:
@@ -264,8 +276,12 @@ def deleteItem(category_id, item_id):
 
 		elif request.method == 'POST':
 
+			delName = activeItem.name
+
 			session.delete(activeItem)
 			session.commit()
+
+			flash('Item "{}" is deleted.'.format(delName), 'success')
 
 			return redirect(url_for('displayOneCategory', category_id = category_id))
 
@@ -319,6 +335,8 @@ def login():
 				session.commit()
 
 			login_user(user)
+
+			flash('Login successful. Welcome, {}!'.format(user.username), 'success')
 
 			return "success"
 

@@ -5,54 +5,62 @@
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
     <script>
-    	if (!sendIdToken) {
-    		var sendIdToken = function (data) {
-    			console.error('function "sendIdToken" is not defined!');
-    		}
-    	}
-
-        function onSuccess(googleUser) {
-          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-          console.log(googleUser.getBasicProfile().getEmail());
-          // window.googleUser = googleUser;
-          sendIdToken(googleUser.getAuthResponse().id_token);
+    function sendIdToken (data) {
+      console.log('sending:' + data)
+      $.ajax({
+        type: 'POST',
+        url: '/login?state={{ state }}',
+        contentType: 'application/octet-stream; charset=uft-8',
+        data: data,
+        success: function (result) {
+          console.log('AJAX success');
+          var redirectURL = GetURLParameter('next');
+          if (redirectURL) {
+            window.location.replace(unescape(redirectURL));
+          }
+        },
+        fail: function (error) {
+          console.error(error);
         }
+      });
+    }
 
-        function onFailure(error) {
-          console.log(error);
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+      console.log(googleUser.getBasicProfile().getEmail());
+      // window.googleUser = googleUser;
+      sendIdToken(googleUser.getAuthResponse().id_token);
+    }
+
+    function onFailure(error) {
+      console.log(error);
+    }
+
+    function renderButton() {
+      gapi.signin2.render('google-signin-button', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+
+    // Function from here:
+    // http://www.jquerybyexample.net/2012/06/get-url-parameters-using-jquery.html
+    function GetURLParameter(sParam){
+	    var sPageURL = window.location.search.substring(1);
+	    var sURLVariables = sPageURL.split('&');
+	    for (var i = 0; i < sURLVariables.length; i++) 
+	    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
         }
-
-        function renderButton() {
-          gapi.signin2.render('google-signin-button', {
-            'scope': 'profile email',
-            'width': 240,
-            'height': 50,
-            'longtitle': true,
-            'theme': 'dark',
-            'onsuccess': onSuccess,
-            'onfailure': onFailure
-          });
-        }
-
-        function signout() {
-        	gapi.auth2.getAuthInstance().signOut().then(function () {
-				console.log("Signed out");
-			});
-        }
-
-        // Function from here:
-        // http://www.jquerybyexample.net/2012/06/get-url-parameters-using-jquery.html
-        function GetURLParameter(sParam){
-		    var sPageURL = window.location.search.substring(1);
-		    var sURLVariables = sPageURL.split('&');
-		    for (var i = 0; i < sURLVariables.length; i++) 
-		    {
-		        var sParameterName = sURLVariables[i].split('=');
-		        if (sParameterName[0] == sParam) 
-		        {
-		            return sParameterName[1];
-		        }
-		    }
+	    }
 		}
 	</script>
 

@@ -17,26 +17,4 @@
   </div>
 </div>
 
-<script>
-  function sendIdToken (data) {
-    console.log('sending:' + data)
-    $.ajax({
-      type: 'POST',
-      url: '/login?state={{ state }}',
-      contentType: 'application/octet-stream; charset=uft-8',
-      data: data,
-      success: function (result) {
-        console.log('AJAX success');
-        var redirectURL = GetURLParameter('next');
-        if (redirectURL) {
-          window.location.replace(unescape(redirectURL));
-        }
-      },
-      fail: function (error) {
-        console.error(error);
-      }
-    });
-  }
-</script>
-
 {% include "part/signin_footer.html" %}

@@ -1,6 +1,7 @@
 {% for item in items %}
 	<div class="card item">
 		<h5 class="card-header">
+			<i class="fa fa-file" aria-hidden="true"></i>
 			{{ item.name }}
 				<div class="float-right float-menu d-none">
 				  <a role="button" class="btn btn-sm btn-outline-primary" href="{{ url_for('updateItem', category_id = id, item_id = item.id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this item">

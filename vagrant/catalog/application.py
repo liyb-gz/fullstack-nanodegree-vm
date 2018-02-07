@@ -56,6 +56,7 @@ def showAllCategories():
 	#TODO: Replace "login" icon
 	#TODO: Write error processor
 	#TODO: Provide form validation
+	#TODO: Delete error printings
 
 	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
 

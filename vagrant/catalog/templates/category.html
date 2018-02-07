@@ -1,24 +1,23 @@
 {% extends "layout/normal.html" %}
 
 {% block main_content %}        
-<div class="col-12 col-sm-9 p-3">
-  <div class="card category">
-	<div class="card-body">
-		<div class="float-right" >
-		  <a role="button" class="btn btn-outline-primary" href="{{ url_for('updateCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this category">
-			<i class="fa fa-pencil" aria-hidden="true"></i>
-		  </a>
-		  <a role="button" class="btn btn-outline-danger" href="{{ url_for('deleteCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this category">
-			<i class="fa fa-trash" aria-hidden="true"></i>
-		  </a>
-		</div>
-	  <h4 class="card-title">{{ activeCategory.name }}</h4>
-	  <p class="card-text">{{ activeCategory.description }}</p>
-	  <div class="card-columns">
-	  	{% include "part/item_card.html" %}
-	  	{% include "part/item_card_new.html" %}
-	  </div>
+<div class="col-12 col-sm-9 p-4">
+	<div class="float-right" >
+	  <a role="button" class="btn btn-outline-primary" href="{{ url_for('updateCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Update this category">
+		<i class="fa fa-pencil" aria-hidden="true"></i>
+	  </a>
+	  <a role="button" class="btn btn-outline-danger" href="{{ url_for('deleteCategory', category_id = id) }}" data-toggle="tooltip" data-placement="bottom" title="Delete this category">
+		<i class="fa fa-trash" aria-hidden="true"></i>
+	  </a>
 	</div>
+  <h1>{{ activeCategory.name }}</h1>
+  {% if activeCategory.description != '' %}
+  <p class="p-3 bg-light">{{ activeCategory.description }}</p>
+  {% endif %}
+  <div class="card-columns">
+  	{% include "part/item_card.html" %}
+  	{% include "part/item_card_new.html" %}
   </div>
+
 </div>
 {% endblock %}

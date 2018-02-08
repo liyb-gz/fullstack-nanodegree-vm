@@ -6,13 +6,8 @@
     {% include 'layout/flash_msg.html' %}
 
     <div class="col-12 p-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="g-signin2" id="google-signin-button" data-onsuccess="onSignIn"></div>
-          {{ state }}
-          <h3 id="result"></h3>
-        </div>
-      </div>
+          <div class="g-signin2 w-100" id="google-signin-button" data-onsuccess="onSignIn"></div>
+          <h3 class="mt-3 text-center text-danger" id="result"></h3>
     </div>
 
   </div>

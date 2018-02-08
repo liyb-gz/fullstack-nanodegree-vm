@@ -14,13 +14,12 @@
         data: data,
         success: function (result) {
           console.log('AJAX success');
-          var redirectURL = GetURLParameter('next');
-          if (redirectURL) {
-            window.location.replace(unescape(redirectURL));
-          }
+          var redirectURL = GetURLParameter('next') || '/';
+          window.location.replace(unescape(redirectURL));
         },
-        fail: function (error) {
-          console.error(error);
+        error: function (jqXHR, textStatus, errorThrown) {
+          $('#result').html(jqXHR.responseJSON.error);
+          gapi.auth2.getAuthInstance().signOut();
         }
       });
     }
@@ -33,6 +32,7 @@
     }
 
     function onFailure(error) {
+      $('#result').html(error);
       console.log(error);
     }
 

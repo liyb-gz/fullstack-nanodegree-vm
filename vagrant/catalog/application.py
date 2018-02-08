@@ -287,7 +287,6 @@ def deleteItem(category_id, item_id):
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-	# TODO: replace json error msg with html 
 	if request.method == 'GET':
 		login_session['state'] = os.urandom(24).encode('hex')
 		return render_template('login.html', state = login_session['state'], CLIENT_ID = CLIENT_ID)

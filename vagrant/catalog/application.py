@@ -47,14 +47,17 @@ CLIENT_ID = '673274558455-it6s06htmm3quqakc97q2a3bnggend4m.apps.googleuserconten
 @app.route('/categories/')
 @login_required
 def showAllCategories():
-	""" Homepage. 
+	""" Display homepage. 
+
 	GET: Show all categories. 
 	"""
 	#TODO: Check app conditions
 	#TODO: Delete error printings
 	#TODO: Delete unnecessary imports
+	#TODO: Add comments for all functions
 
-	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+	categories = session.query(Category).filter_by(\
+		creator_id = current_user.id).all()
 
 	return render_template('index.html', \
 		categories = [category.serialize for category in categories])
@@ -62,10 +65,17 @@ def showAllCategories():
 @app.route('/categories/create/', methods = ['GET', 'POST'])
 @login_required
 def createCategory():
-	""" Create a new category."""
+	""" Create a new category.
+	
+	GET: Display the "create category" page.
+	POST: Accept the form from "create category" page,
+		  create the category accordingly and save it to database.
+	"""
+
 	if request.method == 'GET':
 		# display create new category page
-		categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+		categories = session.query(Category).filter_by(\
+			creator_id = current_user.id).all()
 
 		return render_template('category_create.html', \
 			categories = [category.serialize for category in categories])
@@ -85,7 +95,8 @@ def createCategory():
 			session.add(newCategory)
 			session.commit()
 
-			flash('New category "{}" is created.'.format(newCategory.name), 'success')
+			flash('New category "{}" is created.'\
+				.format(newCategory.name), 'success')
 
 			return redirect(url_for('showAllCategories'))
 		else:
@@ -95,19 +106,29 @@ def createCategory():
 @login_required
 def displayOneCategory(category_id):
 	""" Display a specific category.
-		GET: display this category together with items belong to it.
+
+	GET: display this category together with items belong to it.
 	"""
 
 	# Check if the category exists
-	activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
+	activeCategory = session.query(Category).filter_by(\
+		id = category_id, \
+		creator_id = current_user.id).first()
+
 	if activeCategory is not None:
-		categories = session.query(Category).filter_by(creator_id = current_user.id).all()
-		items = session.query(Item).filter_by(category_id = category_id, creator_id = current_user.id).all()
+		categories = session.query(Category).filter_by(\
+			creator_id = current_user.id).all()
+
+		items = session.query(Item).filter_by(\
+			category_id = category_id, 
+			creator_id = current_user.id).all()
+
 		return render_template('category.html', \
 			categories = [category.serialize for category in categories], \
 			activeCategory = activeCategory, \
 			items = items, \
 			id = category_id)
+
 	else:
 		abort(404)
 
@@ -115,14 +136,27 @@ def displayOneCategory(category_id):
 @app.route('/categories/<int:category_id>/update', methods = ['GET', 'POST'])
 @login_required
 def updateCategory(category_id):
+	""" Update a specific category.
+
+	GET: Display the "update category" page.
+	POST: Accept the form from "update category" page,
+		  update that specific category accordingly and save it to database.
+	"""
+
 	if request.method == 'GET':
-		activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
+		activeCategory = session.query(Category).filter_by(\
+			id = category_id, \
+			creator_id = current_user.id).first()
+
 		if activeCategory is not None:
-			categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+			categories = session.query(Category).filter_by(\
+				creator_id = current_user.id).all()
+
 			return render_template('category_update.html', \
 				categories = [category.serialize for category in categories], \
 				activeCategory = activeCategory, \
 				id = category_id)
+
 		else:
 			abort(404)
 
@@ -133,8 +167,13 @@ def updateCategory(category_id):
 		name = data.get('cname')
 		desc = data.get('cdesc')
 
-		# TODO: Add try except here for one()
-		category = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).one()
+		try:
+			category = session.query(Category).filter_by(\
+				id = category_id, \
+				creator_id = current_user.id).one()
+
+		except Exception, error:
+			abort(400, str(error))
 
 		if name is not None:
 			category.name = name
@@ -152,47 +191,78 @@ def updateCategory(category_id):
 @app.route('/categories/<int:category_id>/delete', methods = ['GET', 'POST'])
 @login_required
 def deleteCategory(category_id):
+	""" Delete a specific category.
+
+	GET: Display the "delete category" page.
+	POST: Accept the form from "delete category" page,
+		  delete that specific category accordingly and save it to database.
+	"""
+
 	if request.method == 'GET':
-		activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
+		activeCategory = session.query(Category).filter_by(\
+			id = category_id, \
+			creator_id = current_user.id).first()
+
 		if activeCategory is not None:
-			categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+			categories = session.query(Category).filter_by(\
+				creator_id = current_user.id).all()
+
 			return render_template('category_delete.html', \
 				categories = [category.serialize for category in categories], \
 				activeCategory = activeCategory, \
 				id = category_id)
+
 		else:
 			abort(404)
 
 	elif request.method == 'POST':
-		# Add try except here for one()
-		category = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).one()
-		items = session.query(Item).filter_by(category_id = category_id, creator_id = current_user.id).all()
+		try:
+			category = session.query(Category).filter_by(\
+				id = category_id, \
+				creator_id = current_user.id).one()
 
-		delName = category.name
+			items = session.query(Item).filter_by(\
+				category_id = category_id, \
+				creator_id = current_user.id).all()
+
+		except Exception, error:
+			abort(400, str(error))
 
 		session.delete(category)
 
+		# Delete related items
 		for item in items:
 			session.delete(item) 
 		
 		session.commit()
 
-		flash('Category "{}" is deleted.'.format(delName), 'success')
+		flash('Category "{}" is deleted.'.format(category.name), 'success')
 
 		return redirect(url_for('showAllCategories'))
 
 @app.route('/categories/<int:category_id>/create', methods = ['GET', 'POST'])
 @login_required
 def createItem(category_id):
-	activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
-	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+	""" Create a new item under the given category.
+	
+	GET: Display the "create item" page.
+	POST: Accept the form from "create item" page,
+		  create the item accordingly and save it to database.
+	"""
+
+	activeCategory = session.query(Category).filter_by(\
+		id = category_id, \
+		creator_id = current_user.id).first()
+
+	categories = session.query(Category).filter_by(\
+		creator_id = current_user.id).all()
 
 	if activeCategory is not None:
 		if request.method == 'GET':
-				return render_template('item_create.html', \
-					categories = [category.serialize for category in categories], \
-					activeCategory = activeCategory, \
-					id = category_id)
+			return render_template('item_create.html', \
+				categories = [category.serialize for category in categories], \
+				activeCategory = activeCategory, \
+				id = category_id)
 
 		elif request.method == 'POST':
 			# receive data from create page form, store it to database
@@ -212,19 +282,35 @@ def createItem(category_id):
 
 				flash('Item "{}" is created.'.format(newItem.name), 'success')
 
-				return redirect(url_for('displayOneCategory', category_id = category_id))
+				return redirect(url_for('displayOneCategory', \
+					category_id = category_id))
 
 			else:
 				abort(400, 'The item name must not be empty.')
 	else:
 		abort(404)
 
-@app.route('/categories/<int:category_id>/items/<int:item_id>/update', methods = ['GET', 'POST'])
+@app.route('/categories/<int:category_id>/items/<int:item_id>/update', \
+	methods = ['GET', 'POST'])
 @login_required
 def updateItem(category_id, item_id):
-	activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
-	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
-	activeItem = session.query(Item).filter_by(id = item_id, creator_id = current_user.id).first()
+	""" Update a specific item.
+
+	GET: Display the "update item" page.
+	POST: Accept the form from "update item" page,
+		  update that specific item accordingly and save it to database.
+	"""
+
+	activeCategory = session.query(Category).filter_by(\
+		id = category_id, \
+		creator_id = current_user.id).first()
+
+	categories = session.query(Category).filter_by(\
+		creator_id = current_user.id).all()
+
+	activeItem = session.query(Item).filter_by(\
+		id = item_id, \
+		creator_id = current_user.id).first()
 
 	if (activeCategory is not None) and (activeItem is not None):
 		if request.method == 'GET':
@@ -251,17 +337,33 @@ def updateItem(category_id, item_id):
 
 			flash('Item "{}" is updated.'.format(activeItem.name), 'success')
 
-			return redirect(url_for('displayOneCategory', category_id = category_id))
+			return redirect(url_for('displayOneCategory', \
+				category_id = category_id))
 
 	else:
 		abort(404)
 
-@app.route('/categories/<int:category_id>/items/<int:item_id>/delete', methods = ['GET', 'POST'])
+@app.route('/categories/<int:category_id>/items/<int:item_id>/delete', \
+	methods = ['GET', 'POST'])
 @login_required
 def deleteItem(category_id, item_id):
-	activeCategory = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
-	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
-	activeItem = session.query(Item).filter_by(id = item_id, creator_id = current_user.id).first()
+	""" Delete a specific item.
+
+	GET: Display the "delete item" page.
+	POST: Accept the form from "delete item" page,
+		  delete that specific item accordingly and save it to database.
+	"""
+
+	activeCategory = session.query(Category).filter_by(\
+		id = category_id, \
+		creator_id = current_user.id).first()
+
+	categories = session.query(Category).filter_by(\
+		creator_id = current_user.id).all()
+
+	activeItem = session.query(Item).filter_by(\
+		id = item_id, \
+		creator_id = current_user.id).first()
 
 	if (activeCategory is not None) and (activeItem is not None):
 		if request.method == 'GET':
@@ -280,16 +382,29 @@ def deleteItem(category_id, item_id):
 
 			flash('Item "{}" is deleted.'.format(delName), 'success')
 
-			return redirect(url_for('displayOneCategory', category_id = category_id))
+			return redirect(url_for('displayOneCategory', \
+				category_id = category_id))
 
 	else:
 		abort(404)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+	""" Log user in. 
+	For all other pages, except logout page, 
+	the user will be redirected here is not logged in.
+
+	GET: Display the login page
+	POST: Receives JSON file from the browser, checks it,
+	      decode the id_token received using Google's OAuth library,
+		  get the id info and decide whether the login is successful or not.
+	"""
+
 	if request.method == 'GET':
 		login_session['state'] = os.urandom(24).encode('hex')
-		return render_template('login.html', state = login_session['state'], CLIENT_ID = CLIENT_ID)
+		return render_template('login.html', \
+			state = login_session['state'], \
+			CLIENT_ID = CLIENT_ID)
 
 	elif request.method == 'POST':
 		# Check Session State
@@ -307,17 +422,19 @@ def login():
 			print idinfo['sub']
 			print idinfo['aud']
 
-			if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+			if idinfo['iss'] not in ['accounts.google.com', \
+									 'https://accounts.google.com']:
 				# Wrong Issuer
 				raise ValueError('The issuer of your ID information is not accepted.')
 
 			if idinfo['aud'] != CLIENT_ID:
 				# Wrong Audience
-				raise ValueError('The audience of your ID information is not this website.')
+				raise ValueError('We are not the audience of your ID information.')
 
 			user = session.query(User).filter_by(gid = idinfo['sub']).first()
 
 			if not user:
+				# User previously did not exist, create one.
 				user = User(\
 					gid = idinfo['sub'],\
 					username = idinfo['name'],\
@@ -337,41 +454,50 @@ def login():
 			return "success"
 
 		except Exception, error:
-			return jsonify(error = str(error)), 400
+			return jsonify(error = str(error)), 401
 
 @app.route('/logout')
 def logout():
+	""" Log user out. (Accepts GET requests only) """
 	logout_user()
 	return render_template('logout.html', CLIENT_ID = CLIENT_ID)
 
 @app.route('/me')
 @login_required
 def showUser():
+	""" Display the current user's profile. """
 	return render_template('user.html')
 
 @app.route('/me/json')
 @login_required
 def jsonUser():
+	""" JSON Entry. Return the current user's profile. """
 	return jsonify(id = current_user.id,\
 		username = current_user.username,\
 		email = current_user.email,\
 		picture = current_user.picture)
-
 
 @app.route('/json')
 @app.route('/categories/json')
 @login_required
 def jsonAllCategories():
 	""" JSON Entry. Return all categories """
-	categories = session.query(Category).filter_by(creator_id = current_user.id).all()
+	categories = session.query(Category).filter_by(\
+		creator_id = current_user.id).all()
+
 	return jsonify(categories = [category.serialize for category in categories])
 
 @app.route('/categories/<int:category_id>/json')
 @login_required
 def jsonCategory(category_id):
 	""" JSON Entry. Return a specific categories with its items. """
-	category = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
-	items = session.query(Item).filter_by(category_id = category_id, creator_id = current_user.id).all()
+	category = session.query(Category).filter_by(\
+		id = category_id, \
+		creator_id = current_user.id).first()
+
+	items = session.query(Item).filter_by(\
+		category_id = category_id, \
+		creator_id = current_user.id).all()
 
 	if category is not None:
 		category_with_items = category.serialize
@@ -384,7 +510,10 @@ def jsonCategory(category_id):
 @app.route('/categories/<int:category_id>/items/<int:item_id>/json')
 @login_required
 def jsonItem(category_id, item_id):
-	item = session.query(Item).filter_by(id = item_id, creator_id = current_user.id).first()
+	""" JSON Entry. Return a specific item. """
+	item = session.query(Item).filter_by(\
+		id = item_id, \
+		creator_id = current_user.id).first()
 
 	if item is not None:
 		return jsonify(item = item.serialize)
@@ -392,8 +521,11 @@ def jsonItem(category_id, item_id):
 	else:
 		return jsonify(error = "Item not found.")
 
+@app.errorhandler(400)
+@app.errorhandler(401)
 @app.errorhandler(404)
 def showError(error):
+	""" Display error page. """
 	return render_template('error.html', error = error), error.code
 
 

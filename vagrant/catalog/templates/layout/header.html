@@ -1,11 +1,11 @@
 {% extends 'layout/header_base.html' %}
 
 {% block login_button %}
-<div class="nav-item dropdown">
-  <a href="#" class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown">
+<div class="ml-auto dropdown">
+  <a href="#" class="btn btn-outline-light dropdown-toggle" id="userDropdown" data-toggle="dropdown">
     {{ current_user.username }}
   </a>
-  <div class="dropdown-menu" aria-labelledby="userDropdown">
+  <div class="dropdown-menu" style="right: 0; left: auto">
     <a class="dropdown-item" href="{{ url_for('showUser') }}">Profile</a>
     <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
   </div>

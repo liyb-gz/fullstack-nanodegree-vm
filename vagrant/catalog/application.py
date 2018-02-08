@@ -52,7 +52,6 @@ def showAllCategories():
 	"""
 	#TODO: Check app conditions
 	#TODO: Write error processor
-	#TODO: Provide form validation
 	#TODO: Delete error printings
 	#TODO: Delete unnecessary imports
 

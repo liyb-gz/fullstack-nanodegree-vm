@@ -51,7 +51,6 @@ def showAllCategories():
 	GET: Show all categories. 
 	"""
 	#TODO: Check app conditions
-	#TODO: Write error processor
 	#TODO: Delete error printings
 	#TODO: Delete unnecessary imports
 
@@ -386,6 +385,10 @@ def jsonItem(category_id, item_id):
 
 	else:
 		return jsonify(error = "Item not found.")
+
+@app.errorhandler(404)
+def showError(error):
+	return render_template('error.html', error = error), error.code
 
 
 if __name__ == '__main__':

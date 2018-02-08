@@ -1,0 +1,21 @@
+{% extends "layout/no_leftbar.html" %}
+
+{% block main_content %}
+
+
+<div class="col-12 p-3">
+
+<div class="card bg-danger text-white">
+	<div class="card-header">Error: {{ error.code }}</div>
+	<div class="card-body">
+		{{ error }}
+	</div>
+	<div class="card-footer">
+		<a href="{{ url_for('showAllCategories') }}" class="btn btn-outline-light">Return</a>
+	</div>
+</div>
+
+</div>
+
+
+{% endblock %}

@@ -347,11 +347,7 @@ def logout():
 @app.route('/me')
 @login_required
 def showUser():
-	# TODO: replace json with HTML page
-	return jsonify(id = current_user.id,\
-		username = current_user.username,\
-		email = current_user.email,\
-		picture = current_user.picture)
+	return render_template('user.html')
 
 @app.route('/me/json')
 @login_required

@@ -354,6 +354,15 @@ def showUser():
 		email = current_user.email,\
 		picture = current_user.picture)
 
+@app.route('/me/json')
+@login_required
+def jsonUser():
+	return jsonify(id = current_user.id,\
+		username = current_user.username,\
+		email = current_user.email,\
+		picture = current_user.picture)
+
+
 @app.route('/json')
 @app.route('/categories/json')
 @login_required

@@ -374,12 +374,14 @@ def jsonAllCategories():
 @app.route('/categories/<int:category_id>/json')
 @login_required
 def jsonCategory(category_id):
-	# TODO: Add items that belongs to this category
 	""" JSON Entry. Return a specific categories with its items. """
 	category = session.query(Category).filter_by(id = category_id, creator_id = current_user.id).first()
+	items = session.query(Item).filter_by(category_id = category_id, creator_id = current_user.id).all()
 
 	if category is not None:
-		return jsonify(category = category.serialize)
+		category_with_items = category.serialize
+		category_with_items['items'] = [item.serialize for item in items]
+		return jsonify(category = category_with_items)
 
 	else:
 		return jsonify(error = "Category not found.")

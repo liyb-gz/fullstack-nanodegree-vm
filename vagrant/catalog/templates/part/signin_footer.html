@@ -6,14 +6,12 @@
 
     <script>
     function sendIdToken (data) {
-      console.log('sending:' + data)
       $.ajax({
         type: 'POST',
         url: '/login?state={{ state }}',
         contentType: 'application/octet-stream; charset=uft-8',
         data: data,
         success: function (result) {
-          console.log('AJAX success');
           var redirectURL = GetURLParameter('next') || '/';
           window.location.replace(unescape(redirectURL));
         },
@@ -25,15 +23,12 @@
     }
 
     function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-      console.log(googleUser.getBasicProfile().getEmail());
-      // window.googleUser = googleUser;
       sendIdToken(googleUser.getAuthResponse().id_token);
     }
 
     function onFailure(error) {
       $('#result').html(error);
-      console.log(error);
+      console.error(error);
     }
 
     function renderButton() {

@@ -20,11 +20,7 @@ from google.auth.transport import requests
 from flask_login import LoginManager, login_required, \
 						login_user, logout_user, current_user 
 
-# ???
-# import httplib2
-# import json
-# import requests
-
+# Initialize Database
 engine = create_engine('sqlite:///catalog.db')
 
 Base.metadata.bind = engine
@@ -51,10 +47,6 @@ def showAllCategories():
 
 	GET: Show all categories. 
 	"""
-	#TODO: Check app conditions
-	#TODO: Delete error printings
-	#TODO: Delete unnecessary imports
-	#TODO: Add comments for all functions
 
 	categories = session.query(Category).filter_by(\
 		creator_id = current_user.id).all()
@@ -416,11 +408,11 @@ def login():
 			token = request.data
 			idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
-			print idinfo['iss']
-			print idinfo['email']
-			print idinfo['name']
-			print idinfo['sub']
-			print idinfo['aud']
+			# print idinfo['iss']
+			# print idinfo['email']
+			# print idinfo['name']
+			# print idinfo['sub']
+			# print idinfo['aud']
 
 			if idinfo['iss'] not in ['accounts.google.com', \
 									 'https://accounts.google.com']:
